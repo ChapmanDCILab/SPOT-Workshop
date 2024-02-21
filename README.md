@@ -1,5 +1,6 @@
 # SPOT Automation Helper 
 ## Written by: Michael [@cdnmonitor](https://github.com/cdnmonitor)
+## Contributors: Kalin Richardson [@kalrich](https://github.com/kalrich), Zack Dell [@pyroflarex](https://github.com/pyroflarex)
 ## Version: 1.0 
 ## Description: 
 This script is designed to help students learning Boston Dynamic's SPOT robot to automate movement using a helper class with some basic functions. 
