@@ -2,6 +2,5 @@
 bosdyn-client >= 3.1
 
 Pillow
-# threading
 keyboard
 windows-curses ; sys_platform == 'win32'
