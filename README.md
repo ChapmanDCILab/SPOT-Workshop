@@ -10,7 +10,7 @@ bosdyn-client, bosdyn-mission, bosdyn-choreography-client
 https://sites.google.com/chapman.edu/the-dci-lab/home/tech-shop-equipment/boston-dynamics-spot-dog/spot-dog-coding?authuser=0
 ## Usage:
 To install:
-```pip install requirements.txt```
+```pip install -r requirements.txt```
 
 To run code:
 ```python3 code_here.py ```
