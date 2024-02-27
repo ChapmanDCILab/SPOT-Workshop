@@ -24,11 +24,23 @@ def main():
     # Ensure the robot is powered on before sending any commands
     controller.power_on_robot()
 
-    ## ENTER SPOT ACTIONS HERE
+    ## code here
 
-    ## SPOT ACTIONS END HERE
+    time.sleep(4)
+    controller.stand()
+    time.sleep(4)
+    controller.sit()
+    time.sleep(4)
+    controller.move_direction("forward", 1)
+    time.sleep(1.5)
+    controller.rotate("left",2)
+    time.sleep(2.5)
+    controller.move_direction("backward", 1)
+    time.sleep(1.5)
+    controller.turn_body_pitch_yaw(0.5, 0.5)
+    time.sleep(4)
 
-    controller.release_resources()
+    ## Code ends here
 
     
 if __name__ == '__main__':
