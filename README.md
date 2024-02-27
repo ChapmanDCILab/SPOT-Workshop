@@ -11,6 +11,7 @@ https://sites.google.com/chapman.edu/the-dci-lab/home/tech-shop-equipment/boston
 ## Usage:
 To install:
 ```python3 -m pip install bosdyn-client==3.3.2 bosdyn-mission==3.3.2 bosdyn-choreography-client==3.3.2```
+
 ```pip install requirements.txt```
 
 To run code:
