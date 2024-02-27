@@ -160,14 +160,14 @@ class SpotRobotController:
         self.move(0, 0, velocity_rot, duration)
 
     # def crawl(self):
-    #    if self.stop_requested: return
-    #    """Sets the robot in Crawl mode."""
-    #    print("Setting robot to Crawl mode...")
-    #    mobility_params = spot_command_pb2.MobilityParams(
-    #        locomotion_hint=spot_command_pb2.HINT_CRAWL, stair_hint=0)
+    #     if self.stop_requested: return
+    #     """Sets the robot in Crawl mode."""
+    #     print("Setting robot to Crawl mode...")
+    #     mobility_params = spot_command_pb2.MobilityParams(
+    #         locomotion_hint=spot_command_pb2.HINT_CRAWL, stair_hint=0)
 
-    #    cmd = RobotCommandBuilder.synchro_stand_command(params=mobility_params)
-    #    self.command_client.robot_command(cmd)
+    #     cmd = RobotCommandBuilder.synchro_stand_command(params=mobility_params)
+    #     self.command_client.robot_command(cmd)
 
 
     # Currently not working
