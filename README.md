@@ -5,6 +5,10 @@
 ## Description: 
 This script is designed to help students learning Boston Dynamic's SPOT robot to automate movement using a helper class with some basic functions. 
 ## Requirements:
+
+[DOWNLOAD PYTHON](https://www.python.org/downloads/)
+[DOWNLOAD AND INSTALL PIP](https://packaging.python.org/en/latest/tutorials/installing-packages/)
+
 bosdyn-client, bosdyn-mission, bosdyn-choreography-client 
 ## Read more about the process:
 https://sites.google.com/chapman.edu/the-dci-lab/home/tech-shop-equipment/boston-dynamics-spot-dog/spot-dog-coding?authuser=0
