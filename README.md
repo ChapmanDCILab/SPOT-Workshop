@@ -7,6 +7,7 @@ This script is designed to help students learning Boston Dynamic's SPOT robot to
 ## Requirements:
 
 [DOWNLOAD PYTHON](https://www.python.org/downloads/)
+
 [DOWNLOAD AND INSTALL PIP](https://packaging.python.org/en/latest/tutorials/installing-packages/)
 
 bosdyn-client, bosdyn-mission, bosdyn-choreography-client 
