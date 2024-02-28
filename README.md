@@ -6,9 +6,9 @@
 This script is designed to help students learn Boston Dynamic's SPOT robot programming. This code automates movement using a helper class with some basic functions (spot_helper.py) and a main function where students will be editing their own code (code_here.py).
 ## Requirements:
 
-1. **[DOWNLOAD PYTHON](https://www.python.org/downloads/)** 
+1. **[INSTALL/DOWNLOAD PYTHON](https://www.python.org/downloads/)** 
 
-   - **for WINDOWS:** install from the [Microsoft Store](https://apps.microsoft.com/detail/9ncvdn91xzqp?hl=en-us&gl=US) as well as download!
+   - **for WINDOWS:** install from the [Microsoft Store](https://apps.microsoft.com/detail/9ncvdn91xzqp?hl=en-us&gl=US) instead of downloading!
    - **for MAC:** the download should do!
 
 
