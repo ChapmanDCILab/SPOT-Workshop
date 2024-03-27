@@ -1,7 +1,9 @@
 # SPOT Automation Helper 
 ## Written by: Michael [@cdnmonitor](https://github.com/cdnmonitor)
 ## Contributors: Kalin Richardson [@kalrich](https://github.com/kalrich)
-## Version: 1.0 
+## Version: 1.1
+   - 1.0: Established with SPOT SDK 3.3.2
+   - 1.1: Updated to SPOT SDK 4.0
 ## Description: 
 This script is designed to help students learn Boston Dynamic's SPOT robot programming. This code automates movement using a helper class with some basic functions (spot_helper.py) and a main function where students will be editing their own code (code_here.py).
 ## Requirements:
@@ -22,7 +24,7 @@ This script is designed to help students learn Boston Dynamic's SPOT robot progr
 ## Usage:
 **INSTALL BOSDYN PACKAGES:**
 
-```python3 -m pip install bosdyn-client==3.3.2 bosdyn-mission==3.3.2 bosdyn-choreography-client==3.3.2```
+```python3 -m pip install bosdyn-client==4.0 bosdyn-mission==4.0 bosdyn-choreography-client==4.0```
 
 **INSTALL REQUIREMENTS.TXT:**
 
