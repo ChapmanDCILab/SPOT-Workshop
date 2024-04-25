@@ -4,14 +4,18 @@ import time
 import bosdyn.client
 import bosdyn.client.util
 from bosdyn.client.robot_command import RobotCommandBuilder, RobotCommandClient
+from bosdyn.client import ResponseError, RpcError, create_standard_sdk
 from bosdyn.client.lease import LeaseClient, LeaseKeepAlive
+from bosdyn.client.lease import Error as LeaseBaseError
 from bosdyn.client.estop import EstopClient, EstopEndpoint, EstopKeepAlive
 from bosdyn.api import robot_command_pb2 as spot_command_pb2
 from bosdyn.client.frame_helpers import BODY_FRAME_NAME
 from bosdyn.api import basic_command_pb2
 from bosdyn.geometry import EulerZXY
 from bosdyn.api.spot import robot_command_pb2 as spot_command_pb2
+from bosdyn.api import arm_command_pb2, geometry_pb2, robot_command_pb2, synchronized_command_pb2
 
+VELOCITY_CMD_DURATION = 0.5  # seconds
 
 class SpotRobotController:
     def __init__(self, config_path):
@@ -40,6 +44,8 @@ class SpotRobotController:
         self.command_client = self.robot.ensure_client(RobotCommandClient.default_service_name)
         self.lease_client = self.robot.ensure_client(LeaseClient.default_service_name)
         self.estop_client = self.robot.ensure_client(EstopClient.default_service_name)
+        self._robot_command_client = self.robot.ensure_client(RobotCommandClient.default_service_name)
+
 
     def acquire_resources(self):
         # Acquire lease
@@ -220,3 +226,93 @@ class SpotRobotController:
             self.sit()
             time.sleep(2)
         self.lease_client.return_lease(self.lease)
+
+    #def arm_cylindrical_velocity_cmd(self, v_r=0.0, v_theta=0.0, v_z=0.0):
+    #    """Helper function to build an arm velocity command from unitless cylindrical coordinates."""
+    #    cmd = RobotCommandBuilder.arm_velocity_command(v_r, v_theta, v_z)
+    #    self.command_client.robot_command(cmd, end_time_secs=time.time() + 0.5)
+
+    def arm_angular_velocity_cmd(self, v_rx=0.0, v_ry=0.0, v_rz=0.0):
+        """Helper function to build an arm velocity command from angular velocities."""
+        cmd = RobotCommandBuilder.arm_angular_velocity_command(v_rx, v_ry, v_rz)
+        self.command_client.robot_command(cmd, end_time_secs=time.time() + 0.5)
+
+    def _arm_cylindrical_velocity_cmd_helper(self, desc='', v_r=0.0, v_theta=0.0, v_z=0.0):
+        """ Helper function to build an arm velocity command from unitless cylindrical coordinates."""
+        cylindrical_velocity = arm_command_pb2.ArmVelocityCommand.CylindricalVelocity()
+        cylindrical_velocity.linear_velocity.r = v_r
+        cylindrical_velocity.linear_velocity.theta = v_theta
+        cylindrical_velocity.linear_velocity.z = v_z
+
+        arm_velocity_command = arm_command_pb2.ArmVelocityCommand.Request(
+            cylindrical_velocity=cylindrical_velocity,
+            end_time=self.robot.time_sync.robot_timestamp_from_local_secs(time.time() + 0.5)
+        )
+
+        self._arm_velocity_cmd_helper(arm_velocity_command=arm_velocity_command, desc=desc)
+
+    def _arm_velocity_cmd_helper(self, arm_velocity_command, desc=''):
+
+        # Build synchronized robot command
+        robot_command = robot_command_pb2.RobotCommand()
+        robot_command.synchronized_command.arm_command.arm_velocity_command.CopyFrom(
+            arm_velocity_command)
+
+        self._start_robot_command(desc, robot_command,
+                                  end_time_secs=time.time() + VELOCITY_CMD_DURATION)
+
+    def _start_robot_command(self, desc, command_proto, end_time_secs=None):
+
+        def _start_command():
+            self._robot_command_client.robot_command(command=command_proto,
+                                                     end_time_secs=end_time_secs)
+
+        self._try_grpc(desc, _start_command)
+
+    def _try_grpc(self, desc, thunk):
+        try:
+            return thunk()
+        except (ResponseError, RpcError, LeaseBaseError) as err:
+            self.add_message(f'Failed {desc}: {err}')
+            return None
+
+    def _try_grpc_async(self, desc, thunk):
+
+        def on_future_done(fut):
+            try:
+                fut.result()
+            except (ResponseError, RpcError, LeaseBaseError) as err:
+                self.add_message(f'Failed {desc}: {err}')
+                return None
+
+        future = thunk()
+        future.add_done_callback(on_future_done)
+
+    # Mapping specific movement and rotation commands to the velocity command helpers
+    def move_out(self):
+        self._arm_cylindrical_velocity_cmd_helper(v_r=0.5)
+
+    def move_in(self):
+        self._arm_cylindrical_velocity_cmd_helper(v_r=-0.5)
+
+    def rotate_ccw(self):
+        self._arm_cylindrical_velocity_cmd_helper(v_theta=1.0)
+
+    def rotate_cw(self):
+        self._arm_cylindrical_velocity_cmd_helper(v_theta=-1.0)
+
+    def move_up(self):
+        self._arm_cylindrical_velocity_cmd_helper(v_z=0.5)
+
+    def move_down(self):
+        self._arm_cylindrical_velocity_cmd_helper(v_z=-0.5)
+
+    def stow(self):
+        """Command to stow the robot's arm."""
+        cmd = RobotCommandBuilder.arm_stow_command()
+        self.command_client.robot_command(cmd)
+
+    def unstow(self):
+        """Command to ready the robot's arm for operation."""
+        cmd = RobotCommandBuilder.arm_ready_command()
+        self.command_client.robot_command(cmd)
