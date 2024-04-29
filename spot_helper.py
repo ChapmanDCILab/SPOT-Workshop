@@ -219,10 +219,12 @@ class SpotRobotController:
 
     def release_resources(self):
         if self.lease_keep_alive:
+            self.stow()
             self.sit()
             time.sleep(5)
             self.lease_keep_alive.shutdown()
         if self.estop_keepalive:
+            self.stow()
             self.sit()
             time.sleep(2)
         self.lease_client.return_lease(self.lease)
@@ -290,10 +292,10 @@ class SpotRobotController:
 
     # Mapping specific movement and rotation commands to the velocity command helpers
     def move_out(self):
-        self._arm_cylindrical_velocity_cmd_helper(v_r=0.5)
+        self._arm_cylindrical_velocity_cmd_helper(v_r=1)
 
     def move_in(self):
-        self._arm_cylindrical_velocity_cmd_helper(v_r=-0.5)
+        self._arm_cylindrical_velocity_cmd_helper(v_r=-1)
 
     def rotate_ccw(self):
         self._arm_cylindrical_velocity_cmd_helper(v_theta=1.0)
