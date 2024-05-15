@@ -4,6 +4,7 @@
 ## Version: 1.1
    - 1.0: Established with SPOT SDK 3.3.2
    - 1.1: Updated to SPOT SDK 4.0
+   - 1.1.2 Added arm support (stow/unstow/movement)
 ## Description: 
 This script is designed to help students learn Boston Dynamic's SPOT robot programming. This code automates movement using a helper class with some basic functions (spot_helper.py) and a main function where students will be editing their own code (code_here.py).
 ## Requirements:
