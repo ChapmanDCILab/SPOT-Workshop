@@ -25,6 +25,14 @@ def main():
     controller.power_on_robot()
 
     ## ENTER SPOT ACTIONS HERE
+    controller.stand()
+    time.sleep(2)
+    controller.unstow()
+    time.sleep(2)
+    controller.move_out()
+    time.sleep(2)
+    controller.stow()
+    time.sleep()
 
     ## SPOT ACTIONS END HERE
 
